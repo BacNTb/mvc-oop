@@ -21,69 +21,40 @@ class ResourceModel implements ResourceModelInterFace
 
     public function save($model)
     {
-        $id = $model->getID();
+        $id = $model->getId();
         $title = $model->getTitle();
         $description = $model->getDescription();
-
-        $props = $model->getProperties();
         
         if ($id) {
-            $sql = "UPDATE $this->table SET ";
-            unset($props['id']);
-            if(count($props) > 0 ){
-                $i = 0;
-                foreach($props as $key => $prop){
-                    if($i == count($props) - 1){
-                        $sql .= "$key =:$key ";
-                    }else{
-                        $sql .= "$key =:$key ,";
-                    }
-                    $i++;
-                }
-                $sql .= "WHERE id = :id";
-            }
+            $sql = "UPDATE tasks SET title = :title, description = :description , updated_at = :updated_at WHERE id = :id";
 
             $req = Database::getBdd()->prepare($sql);
+
             return $req->execute([
+                'id' => $id,
                 'title' => $title,
                 'description' => $description,
-                'updated_at' => date("Y-m-d h:i:s"),
-                'created_at' => $this->getCreatedAt($id),
-                'id' => $id
+                'updated_at' => date('Y-m-d H:i:s')
+
             ]);
+
         } else {
-            $sql = "INSERT INTO $this->table ";
-            if(count($props) > 0 ){
-                $valueField = "(";
-                $labelField = "(";
-                $i = 0;
-                foreach($props as $key => $prop){
-                    if($key !== "id"){
-                        if($i == count($props) - 1){
-                            $labelField .= $key.")";
-                            $valueField .= ":".$key.")";
-                        }else{
-                            $labelField .= $key.", ";
-                            $valueField .= ":".$key.", ";
-                        }
-                    }
-                    $i++;
-                }
-                $sql .= $labelField ." VALUES ". $valueField;
-            }
+            $sql = "INSERT INTO $this->table (title, description, created_at, updated_at) VALUES (:title, :description, :created_at, :updated_at)";
+
             $req = Database::getBdd()->prepare($sql);
+
             return $req->execute([
                 'title' => $title,
                 'description' => $description,
-                'created_at' => date("Y-m-d h:i:s"),
-                'updated_at' => NULL
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
             ]);
         }
     }
 
     public function delete($model)
     {
-        $id = $model->getID();
+        $id = $model->getId();
 
         if($id){
             $sql = "DELETE FROM " . $this->table . " WHERE id = :id";
@@ -111,7 +82,7 @@ class ResourceModel implements ResourceModelInterFace
         return $req->fetchAll();
     }
 
-    public function findID($id){
+    public function showTask($id){
         $sql =  "SELECT * FROM $this->table WHERE id = $id";
 
         $req = Database::getBdd()->prepare($sql);

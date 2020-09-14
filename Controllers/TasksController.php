@@ -45,7 +45,7 @@ class TasksController extends Controller
     function edit($id)
     {
         $task= new Task();
-        $task->setID($id);
+        $task->setId($id);
 
         if (isset($_POST["title"]))
         {
@@ -58,7 +58,7 @@ class TasksController extends Controller
             }
         }
 
-        $d["task"] = $this->TaskRepository->findID($id);
+        $d["task"] = $this->TaskRepository->showTask($id);
 
         $this->set($d);
         $this->render("edit");

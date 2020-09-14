@@ -19,43 +19,43 @@ class Task extends Model
         
     }
 
-    public function getID(){
+    public function getId() {
         return $this->id;
     }
 
-    public function setID($id){
+    public function setId($id) {
         $this->id = $id;
     }
 
-    public function getTitle(){
+    public function getTitle() {
         return $this->title;
     }
 
-    public function setTitle($title){
+    public function setTitle($title) {
         $this->title = $title;
     }
     
-    public function getDescription(){
+    public function getDescription() {
         return $this->description;
     }
 
-    public function setDescription($description){
+    public function setDescription($description) {
         $this->description = $description;
     }
 
-    public function getCreatedAt(){
+    public function getCreatedAt() {
         return $this->created_at;
     }
 
-    public function setCreatedAt(){
+    public function setCreatedAt() {
         $this->created_at = date("Y-m-d h:i:s");
     }
 
-    public function getUpdatedAt(){
+    public function getUpdatedAt() {
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(){
+    public function setUpdatedAt() {
         $this->updated_at = date("Y-m-d h:i:s");
     }
 
